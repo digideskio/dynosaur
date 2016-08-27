@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+require 'mixlib/shellout'
+require 'tmpdir'
+
+$stdout.sync = true
+$stderr.sync = true
+
+class LiveStream
+  def <<(message)
+    print message
+  end
+end
+
+def heading(message)
+  puts message
+end
+
+def log_line(message)
+  puts message
+end
+
+def log(message)
+  message.split("\n").each do |line|
+    log_line(line)
+  end
+end
+
+project = ARGV[0]
+
+heading("Building #{project}")
+
+Dir.mktmpdir do |dir|
+  Dir.chdir(dir)
+  `git clone ~/#{project} . 2>&1`
+  `rm -rf ~/#{project}`
+  cmd = Mixlib::ShellOut.new("compile . #{project}.slug", live_stream: LiveStream.new)
+  cmd.run_command
+  `cp #{project}.slug ~/slugs`
+  install_cmd = File.expand_path("./../install", __FILE__)
+  cmd = Mixlib::ShellOut.new("#{install_cmd} ~/slugs/#{project}.slug", live_stream: LiveStream.new)
+  cmd.run_command
+  cmd = Mixlib::ShellOut.new("web", live_stream: LiveStream.new)
+  cmd.run_command
+end

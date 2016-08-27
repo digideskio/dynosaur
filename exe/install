@@ -1,0 +1,4 @@
+#!/bin/bash
+rm -rf /app/* &> /dev/null
+rm -rf /app/.* &> /dev/null
+tar -zxf $1 -C /app

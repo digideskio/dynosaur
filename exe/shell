@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+
+command, args = ENV["SSH_ORIGINAL_COMMAND"].to_s.split
+args = args[1..-2]
+if command.to_s.empty?
+  puts "Welcome to dynosaur!"
+  puts
+  puts "Commands:"
+  puts "  install-build-pack URL"
+  puts "  config-set KEY VALUE"
+  puts "  config-get KEY VALUE"
+  puts
+elsif command == 'git-receive-pack'
+  repodir = File.join(ENV["HOME"], args)
+  unless File.directory? repodir
+    FileUtils.mkdir_p repodir
+    `cd #{repodir} && git init --bare`
+    File.open(File.join(repodir, "hooks", "post-receive"), 'w') do |f|
+      f.puts "#!/bin/sh"
+      f.puts "hook #{args}"
+    end
+    `chmod +x #{File.join(repodir, "hooks", "post-receive")}`
+    #GIT_WORK_TREE=/var/www/www.example.org git checkout -f
+  end
+
+  Kernel.exec "git", "shell", "-c", ENV["SSH_ORIGINAL_COMMAND"]
+elsif command == 'git-upload-pack'
+  Kernel.exec "git", "shell", "-c", command
+else
+  $stderr.puts "Huh?"
+end
