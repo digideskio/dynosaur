@@ -7,10 +7,19 @@ if command.to_s.empty?
   puts "Welcome to dynosaur!"
   puts
   puts "Commands:"
-  puts "  install-build-pack URL"
-  puts "  config-set KEY VALUE"
-  puts "  config-get KEY VALUE"
+  puts "  check"
+  puts "  console"
+  puts "  rake ARGS"
   puts
+elsif command == 'console'
+  Dir.chdir("/app")
+  Kernel.exec "console"
+elsif command == 'rake'
+  Dir.chdir("/app")
+  Kernel.exec "rake", args
+elsif command == 'check'
+  Dir.chdir("/app")
+  Kernel.exec "check"
 elsif command == 'git-receive-pack'
   repodir = File.join(ENV["HOME"], args)
   unless File.directory? repodir
