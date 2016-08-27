@@ -2,7 +2,6 @@
 require 'fileutils'
 
 command, args = ENV["SSH_ORIGINAL_COMMAND"].to_s.split
-args = args[1..-2]
 if command.to_s.empty?
   puts "Welcome to dynosaur!"
   puts
