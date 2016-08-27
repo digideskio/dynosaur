@@ -20,6 +20,7 @@ elsif command == 'check'
   Dir.chdir("/app")
   Kernel.exec "check"
 elsif command == 'git-receive-pack'
+  args = args[1..-2]
   repodir = File.join(ENV["HOME"], args)
   unless File.directory? repodir
     FileUtils.mkdir_p repodir
