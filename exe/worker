@@ -1,2 +1,2 @@
-#!/bin/bash
-exec run_process_type start worker
+#!/usr/bin/env ruby
+exec File.expand_path("./../run_process_type start worker", __FILE__)

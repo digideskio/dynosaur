@@ -1,2 +1,2 @@
-#!/bin/bash
-exec run_process_type run rake "$@"
+#!/usr/bin/env ruby
+exec File.expand_path("./../run_process_type run rake #{ARGV.join(" ")}", __FILE__)
