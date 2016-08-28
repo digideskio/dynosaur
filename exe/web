@@ -1,2 +1,3 @@
 #!/usr/bin/env ruby
-exec File.expand_path("./../run_process_type start web #{ARGV.join(" ")}", __FILE__)
+Dir.chdir("/app/#{ARGV[0]}")
+exec File.expand_path("./../run_process_type start web", __FILE__)
