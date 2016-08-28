@@ -21,7 +21,7 @@ cd $HOME
 
 if foreman check > /dev/null; then
   if foreman check | grep $COMMAND > /dev/null; then
-    exec foreman $TYPE $COMMAND -d /app $@
+    exec foreman $TYPE $COMMAND -d /app/${PROJECT} $@
   else
     echo "Missing $COMMAND command"
     exit 2
