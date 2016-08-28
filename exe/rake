@@ -1,2 +1,2 @@
 #!/usr/bin/env ruby
-exec File.expand_path("./../run_process_type run rake #{ARGV.join(" ")}", __FILE__)
+exec File.expand_path("./../run_process_type #{ARGV[0]} run rake #{ARGV[1..-1].join(" ")}", __FILE__)
