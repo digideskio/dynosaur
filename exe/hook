@@ -39,6 +39,6 @@ Dir.mktmpdir do |dir|
   install_cmd = File.expand_path("./../install", __FILE__)
   cmd = Mixlib::ShellOut.new("#{install_cmd} #{project}", live_stream: LiveStream.new)
   cmd.run_command
-  cmd = Mixlib::ShellOut.new("web", live_stream: LiveStream.new)
+  cmd = Mixlib::ShellOut.new("web #{project}", live_stream: LiveStream.new)
   cmd.run_command
 end
