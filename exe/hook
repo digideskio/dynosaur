@@ -31,14 +31,17 @@ heading("Building #{project}")
 
 Dir.mktmpdir do |dir|
   Dir.chdir(dir)
+
   `git clone ~/#{project} . 2>&1`
   `rm -rf ~/#{project}`
+
   cmd = Mixlib::ShellOut.new("compile . #{project}.slug", live_stream: LiveStream.new)
   cmd.run_command
+
   `cp #{project}.slug ~/slugs`
-  install_cmd = File.expand_path("./../install", __FILE__)
-  cmd = Mixlib::ShellOut.new("#{install_cmd} #{project}", live_stream: LiveStream.new)
-  cmd.run_command
-  cmd = Mixlib::ShellOut.new("web #{project}", live_stream: LiveStream.new)
-  cmd.run_command
+  `mkdir -p /app/#{project}`
+  `rm -rf /app/#{project}/* &> /dev/null`
+  `rm -rf /app/#{project}/.* &> /dev/null`
+  `tar -zxf ~/slugs/#{project}.slug -C /app/#{project}`
+  exec "web #{project}"
 end

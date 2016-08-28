@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'fileutils'
 
-command, args = ENV["SSH_ORIGINAL_COMMAND"].to_s.split
+command, args = ENV["SSH_ORIGINAL_COMMAND"].to_s.split(" ", 2)
 if command.to_s.empty?
   puts "Welcome to Dynosaur!"
   puts
@@ -11,14 +11,16 @@ if command.to_s.empty?
   puts "  rake ARGS"
   puts
 elsif command == 'console'
-  Dir.chdir("/app")
-  Kernel.exec "console"
+  args = args.split
+  Dir.chdir("/app/#{args[0]}")
+  exec File.expand_path("./../run_process_type #{args[0]} run console #{args[1..-1].join(" ")}", __FILE__)
 elsif command == 'rake'
-  Dir.chdir("/app")
-  Kernel.exec "rake", args
+  args = args.split
+  Dir.chdir("/app/#{args[0]}")
+  exec File.expand_path("./../run_process_type #{args[0]} run rake #{args[1..-1].join(" ")}", __FILE__)
 elsif command == 'check'
-  Dir.chdir("/app")
-  Kernel.exec "check"
+  args = args.split
+  exec "foreman check -d /app/#{args[0]}"
 elsif command == 'git-receive-pack'
   args = args[1..-2]
   repodir = File.join(ENV["HOME"], args)
