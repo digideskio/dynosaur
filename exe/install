@@ -1,4 +1,5 @@
 #!/bin/bash
-rm -rf /app/* &> /dev/null
-rm -rf /app/.* &> /dev/null
-tar -zxf $1 -C /app
+mkdir -p /app/$1
+rm -rf /app/$1/* &> /dev/null
+rm -rf /app/$1/.* &> /dev/null
+tar -zxf ~/slugs/$1.slug -C /app/$1
