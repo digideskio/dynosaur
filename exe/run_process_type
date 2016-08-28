@@ -1,6 +1,6 @@
 #!/bin/bash
-HOME=/app
-export HOME=/app
+HOME=/app/$1
+export HOME=/app/$1
 TYPE=$1
 shift
 COMMAND=$1
