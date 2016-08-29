@@ -38,6 +38,7 @@ class Buildpack
       "HOME" => @build,
       "PWD" => @build,
       "STACK" => ENV["STACK"] || "cedar-14",
+      "SSH_AUTH_SOCK" => ENV["SSH_AUTH_SOCK"],
       "CURL_CONNECT_TIMEOUT" => "10"
     }
     timeout = (ENV["COMPILE_TIMEOUT"] || 900).to_i
